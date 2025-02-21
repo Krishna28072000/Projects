@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Report Analyzer</title>
+    <script>
+        async function analyzePDF() {
+            const fileInput = document.getElementById("pdf_file");
+            if (fileInput.files.length === 0) {
+                alert("Please select a PDF file.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("pdf_file", fileInput.files[0]);
+
+            const response = await fetch("/analyze_pdf", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            
+            if (data.error) {
+                document.getElementById("result").innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+            } else {
+                document.getElementById("result").innerHTML = `
+                    <h3>Analysis Result:</h3>
+                    <p><strong>Scan Type:</strong> ${data.scan}</p>
+                    <p><strong>Status:</strong> ${data.status}</p>
+                    <p><strong>Recommendation:</strong> ${data.recommendation}</p>
+                `;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Medical Report Analyzer</h2>
+    
+    <label for="pdf_file">Upload a Medical Report (PDF):</label>
+    <input type="file" id="pdf_file" accept="application/pdf">
+    <button onclick="analyzePDF()">Analyze</button>
+
+    <div id="result"></div>
+</body>
+</html>
+
+<!--
+<div class = "unused-section">
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Report Analyzer</title>
+    <script>
+        async function analyzePDF() {
+            const fileInput = document.getElementById("pdf_file");
+            if (fileInput.files.length === 0) {
+                alert("Please select a PDF file.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("pdf_file", fileInput.files[0]);
+
+            const response = await fetch("/analyze_pdf", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            
+            if (data.error) {
+                document.getElementById("result").innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+            } else {
+                document.getElementById("result").innerHTML = `
+                    <h3>Analysis Result:</h3>
+                    <p><strong>Scan Type:</strong> ${data.scan}</p>
+                    <p><strong>Status:</strong> ${data.status}</p>
+                    <p><strong>Recommendation:</strong> ${data.recommendation}</p>
+                `;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Medical Report Analyzer</h2>
+    
+    <label for="pdf_file">Upload a Medical Report (PDF):</label>
+    <input type="file" id="pdf_file" accept="application/pdf">
+    <button onclick="analyzePDF()">Analyze</button>
+
+    <div id="result"></div>
+</body>
+</html> 
+</div>
+-->
